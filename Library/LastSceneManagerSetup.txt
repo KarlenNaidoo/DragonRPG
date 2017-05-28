@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/Scenes/Village Green/Village Green.unity
-  isLoaded: 1
-  isActive: 1

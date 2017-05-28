@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour {
     [SerializeField] float projectileSpeed;
     float damageCaused;
 
+    // Sets the damage caused using a public get method
     public void SetDamage(float damage)
     {
         damageCaused = damage;
