@@ -10,7 +10,7 @@ public class CursorAffordance : MonoBehaviour {
     [SerializeField] Texture2D targetCursor = null;
     [SerializeField] Vector2 cursorHotspot = new Vector2(96,96); // Related to size of asset
 
-    //TODO: Solve fight between const and serliazed
+    //TODO Solve fight between const and serliazed
     [SerializeField] const int walkableLayerNumber = 8;
     [SerializeField] const int enemyLayerNumber = 9;
 
