@@ -943,6 +943,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114082202134362422, guid: f17b149c34087094cad2c7cf22b0c060,
+        type: 2}
+      propertyPath: m_GroundCheckDistance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 195950791635825730, guid: f17b149c34087094cad2c7cf22b0c060,
+        type: 2}
+      propertyPath: m_StoppingDistance
+      value: 1.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f17b149c34087094cad2c7cf22b0c060, type: 2}
   m_IsPrefabParent: 0
