@@ -13,7 +13,7 @@ public class Projectile : MonoBehaviour {
         damageCaused = damage;
     }
 
-    void OnTriggerEnter(Collider collider)
+    void OnCollisionEnter(Collision collider)
     {
        // damageableComponent is nullable. Finding a gameobject with a script that implements the Idamageable interface
         var damageableComponent = collider.gameObject.GetComponent(typeof(IDamageable));
@@ -21,7 +21,10 @@ public class Projectile : MonoBehaviour {
         if (damageableComponent)
         {
             (damageableComponent as IDamageable).TakeDamage(damageCaused);
+
         }
+
+        Destroy(gameObject, 0.1f);
     }
 
    public float getProjectileSpeed { get { return projectileSpeed; } }
