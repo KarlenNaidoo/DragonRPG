@@ -33,6 +33,4 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
-ProjectSettings/
-
 Library/
