@@ -1,32 +1,45 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Assertions;
-using UnityStandardAssets.Characters.ThirdPerson;
 
 [RequireComponent(typeof(CameraRaycaster))]
-public class Player : MonoBehaviour, IDamageable {
+public class Player : MonoBehaviour, IDamageable
+{
+    private CameraRaycaster cameraRaycaster;
+    [SerializeField] private float currentHealthPoints;
+    [SerializeField] private float damagePerHit = 10;
+    [SerializeField] private int enemyLayer = 9;
+    private float lastHitTime = 0f;
+    [SerializeField] private float maxAttackRange = 2f;
+    [SerializeField] private float maxHealthPoints = 100f;
+    [SerializeField] private float minTimeBetweenHits = .5f;
+    [SerializeField] private Weapon weaponInUse;
+    public float healthAsPercentage { get { return currentHealthPoints / (float)maxHealthPoints; } }
 
-    [SerializeField] float maxHealthPoints = 100f;
-    [SerializeField] float currentHealthPoints;
-    [SerializeField] int enemyLayer = 9;
-    [SerializeField] float damagePerHit = 10;
-    [SerializeField] float minTimeBetweenHits = .5f;
-    [SerializeField] float maxAttackRange = 2f;
-    [SerializeField] Weapon weaponInUse;
-
-    
-    GameObject currentTarget;
-    CameraRaycaster cameraRaycaster;
-    float lastHitTime = 0f;
-
-    void Start()
+    public void TakeDamage(float damage)
     {
-        RegisterForMouseClick();
-        currentHealthPoints = maxHealthPoints;
-        PutWeaponInHand();
+        currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+    }
 
+    // Refactor to simplify, reduce number of lines
+    private void OnMouseClick(RaycastHit raycastHit, int layerHit)
+    {
+        if (layerHit == enemyLayer)
+        {
+            var enemy = raycastHit.collider.gameObject;
+
+            // Check distance from player to enemy
+            // Could also use (enemy.transform.position - transform.position).magnitude
+            float distanceToEnemy = Vector3.Distance(enemy.transform.position, transform.position);
+            if (distanceToEnemy > maxAttackRange) { return; }
+
+            var enemyComponent = enemy.GetComponent<Enemy>();
+
+            if (Time.time - lastHitTime > minTimeBetweenHits)
+            {
+                enemyComponent.TakeDamage(damagePerHit);
+                lastHitTime = Time.time;
+            }
+        }
     }
 
     private void PutWeaponInHand()
@@ -38,6 +51,12 @@ public class Player : MonoBehaviour, IDamageable {
         weapon.transform.localRotation = weaponInUse.gripTransform.localRotation;
     }
 
+    private void RegisterForMouseClick()
+    {
+        cameraRaycaster = FindObjectOfType<CameraRaycaster>();
+        cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+    }
+
     private GameObject RequestDominantHand()
     {
         var dominantHands = GetComponentsInChildren<DominantHand>();
@@ -45,49 +64,12 @@ public class Player : MonoBehaviour, IDamageable {
         Assert.IsFalse(numberOfDominantHands <= 0, "No DominantHand found on player, please add one");
         Assert.IsFalse(numberOfDominantHands > 1, "Multiple DominantHand scripts on Player, please remove one");
         return dominantHands[0].gameObject;
-
     }
 
-    private void RegisterForMouseClick()
+    private void Start()
     {
-        cameraRaycaster = FindObjectOfType<CameraRaycaster>();
-        cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+        RegisterForMouseClick();
+        currentHealthPoints = maxHealthPoints;
+        PutWeaponInHand();
     }
-
-    // Refactor to simplify, reduce number of lines
-    void OnMouseClick(RaycastHit raycastHit, int layerHit)
-    {
-        if (layerHit == enemyLayer)
-        {
-            var enemy = raycastHit.collider.gameObject;
-
-            // Check distance from player to enemy
-            // Could also use (enemy.transform.position - transform.position).magnitude
-            float distanceToEnemy = Vector3.Distance(enemy.transform.position, transform.position);
-            if (distanceToEnemy > maxAttackRange)
-            {
-                return;
-            }
-
-            currentTarget = enemy;
-            var enemyComponent = enemy.GetComponent<Enemy>();
-
-            if (Time.time - lastHitTime > minTimeBetweenHits)
-            {
-                enemyComponent.TakeDamage(damagePerHit);
-                lastHitTime = Time.time;
-            }
-
-
-        }
-
-    }
-    public float healthAsPercentage { get { return currentHealthPoints / (float)maxHealthPoints;} }
-
-    public void TakeDamage(float damage)
-    {
-        currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
-        
-    }
-
 }

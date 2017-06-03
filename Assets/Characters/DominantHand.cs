@@ -6,8 +6,5 @@ public class DominantHand : MonoBehaviour {
 
     // Add to dominant hand on character prefab
 
-    void Start()
-    {
-        print("Hello!");
-    }
+
 }
