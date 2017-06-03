@@ -692,6 +692,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealthPoints: 100
+  animatorOverrideController: {fileID: 22100000, guid: aae1eff83643ae94ea4348b12f89633d,
+    type: 2}
   damagePerHit: 50
   enemyLayer: 9
   maxAttackRange: 2

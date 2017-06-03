@@ -1,18 +1,22 @@
-﻿using UnityEngine;
+﻿// TODO consider re-wiring
+using System;
+using RPG.CameraUI;
+using RPG.Core;
+using RPG.Weapons;
+using UnityEngine;
 using UnityEngine.Assertions;
 
-// TODO consider re-wiring
-using RPG.CameraUI; 
-using RPG.Core;
 namespace RPG.Characters
 {
-
     [RequireComponent(typeof(CameraRaycaster))]
     public class Player : MonoBehaviour, IDamageable
     {
         private CameraRaycaster cameraRaycaster;
         [SerializeField] private float currentHealthPoints;
+
+        [SerializeField] AnimatorOverrideController animatorOverrideController;
         [SerializeField] private float damagePerHit = 10;
+
         [SerializeField] private int enemyLayer = 9;
         private float lastHitTime = 0f;
         [SerializeField] private float maxAttackRange = 2f;
@@ -75,8 +79,21 @@ namespace RPG.Characters
         private void Start()
         {
             RegisterForMouseClick();
-            currentHealthPoints = maxHealthPoints;
+            SetCurrentMaxHealth();
             PutWeaponInHand();
+            OverrideAnimatorController();
+        }
+
+        private void SetCurrentMaxHealth()
+        {
+            currentHealthPoints = maxHealthPoints;
+        }
+
+        private void OverrideAnimatorController()
+        {
+            Animator animator = GetComponent<Animator>();
+            animator.runtimeAnimatorController = animatorOverrideController;
+            animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimClip(); // TODO remove constant
         }
     }
 }
