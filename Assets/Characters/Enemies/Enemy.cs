@@ -36,8 +36,8 @@ public class Enemy : MonoBehaviour, IDamageable {
         if (distanceToPlayer <= attackRadius && !isAttacking)
         {
             isAttacking = true;
-            InvokeRepeating("SpawnProjectile", 0f, secondsBetweenShots); // TODO Switch to coroutines
-            SpawnProjectile();
+            InvokeRepeating("FireProjectile", 0f, secondsBetweenShots); // TODO Switch to coroutines
+            FireProjectile();
         }
 
         if (distanceToPlayer > attackRadius)
@@ -57,15 +57,17 @@ public class Enemy : MonoBehaviour, IDamageable {
 
     }
 
-    void SpawnProjectile()
+    // TODO Separate out character firing logic
+    void FireProjectile()
     {
         GameObject newProjectile = Instantiate(projectileToUse, projectileSocket.transform.position, Quaternion.identity);
-       
         Projectile projectileComponent = newProjectile.GetComponent<Projectile>();
         projectileComponent.SetDamage(damagePerShot);
+        projectileComponent.SetShooter(this.gameObject);
+
         //Calculate direction between player root and projectile spawn point
         Vector3 unitVectorToPlayer = (player.transform.position + aimOffset - projectileSocket.transform.position ).normalized;
-        newProjectile.GetComponent<Rigidbody>().velocity = unitVectorToPlayer * newProjectile.GetComponent<Projectile>().getProjectileSpeed;
+        newProjectile.GetComponent<Rigidbody>().velocity = unitVectorToPlayer * newProjectile.GetComponent<Projectile>().GetDefaultLaunchSpeed;
 
     }
     public float healthAsPercentage { get { return currentHealthPoints / (float)maxHealthPoints;} }

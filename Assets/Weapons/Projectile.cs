@@ -1,11 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Projectile : MonoBehaviour {
+public class Projectile : MonoBehaviour
+{
+    private const float DESTROY_DELAY = 0.01f;
+    private float damageCaused;
+    [SerializeField] private float projectileSpeed;
+    [SerializeField] private GameObject shooter; // So can inspect when paused
 
-    [SerializeField] float projectileSpeed;
-    float damageCaused;
+    public float GetDefaultLaunchSpeed { get { return projectileSpeed; } }
+    
+    // TODO investigate OOP with using getters and setters
 
     // Sets the damage caused using a public get method
     public void SetDamage(float damage)
@@ -13,18 +17,30 @@ public class Projectile : MonoBehaviour {
         damageCaused = damage;
     }
 
-    void OnCollisionEnter(Collision collider)
+    public void SetShooter(GameObject shooter)
     {
-       // damageableComponent is nullable. Finding a gameobject with a script that implements the Idamageable interface
-        var damageableComponent = collider.gameObject.GetComponent(typeof(IDamageable));
+        this.shooter = shooter;
+        print("Shooter is " + this.shooter);
+    }
+
+    private void DealDamageOnlyIfDamagable(Collision collision)
+    {
+        var damageableComponent = collision.gameObject.GetComponent(typeof(IDamageable));
         if (damageableComponent)
         {
             (damageableComponent as IDamageable).TakeDamage(damageCaused);
-
         }
 
-        Destroy(gameObject, 0.1f);
+        Destroy(gameObject, DESTROY_DELAY);
     }
 
-   public float getProjectileSpeed { get { return projectileSpeed; } }
+    private void OnCollisionEnter(Collision collision)
+    {
+        var layerCollidedWith = collision.gameObject.layer;
+        if (shooter.layer != layerCollidedWith)
+        {
+            // damageableComponent is nullable. Finding a gameobject with a script that implements the Idamageable interface
+            DealDamageOnlyIfDamagable(collision);
+        }
+    }
 }
