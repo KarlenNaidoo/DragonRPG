@@ -194,8 +194,12 @@ MonoBehaviour:
   disablePixelLights: 1
   textureSize: 64
   clipPlaneOffset: 0.07
-  reflectLayers: {}
-  refractLayers: {}
+  reflectLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  refractLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!136 &136942943197975036
 CapsuleCollider:
   m_ObjectHideFlags: 1

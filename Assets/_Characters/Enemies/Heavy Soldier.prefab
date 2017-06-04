@@ -2198,8 +2198,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1467491513666214}
-  m_LocalRotation: {x: -0, y: 0.52413887, z: -0, w: 0.85163283}
-  m_LocalPosition: {x: -58.022446, y: 9.998169, z: 13.374695}
+  m_LocalRotation: {x: -0, y: 0.9992402, z: -0, w: 0.03897562}
+  m_LocalPosition: {x: -76.68341, y: -12.533461, z: 39.84379}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4979146870527788}
@@ -2209,7 +2209,7 @@ Transform:
   - {fileID: 4574904249996384}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 63.221004, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 175.533, z: 0}
 --- !u!4 &4808941917402810
 Transform:
   m_ObjectHideFlags: 1
@@ -2617,7 +2617,7 @@ CapsuleCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1467491513666214}
-  m_Material: {fileID: 13400000, guid: e52fb17f9b1e7fd48b8955f1391d3688, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.2
@@ -2654,6 +2654,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
@@ -2709,6 +2710,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
@@ -2799,6 +2801,7 @@ NavMeshAgent:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1467491513666214}
   m_Enabled: 1
+  m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 4
   m_Acceleration: 8

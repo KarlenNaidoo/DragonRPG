@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 
+// Add a UI Socket transform to your enemy
+// Attach this script to the socket
+// Link to a canvas prefab
 namespace RPG.Characters
 {
-
-    // Add a UI Socket transform to your enemy
-    // Attach this script to the socket
-    // Link to a canvas prefab that contains NPC UI
     public class EnemyUI : MonoBehaviour
     {
 
