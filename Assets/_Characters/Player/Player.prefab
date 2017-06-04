@@ -73,6 +73,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4599871443918014}
+  - component: {fileID: 114789137507149182}
   m_Layer: 11
   m_Name: Hand_R
   m_TagString: Untagged
@@ -178,7 +179,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4289291821289462}
-  - component: {fileID: 114586581132447118}
   m_Layer: 11
   m_Name: Hand_L
   m_TagString: Untagged
@@ -621,7 +621,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1017190992082020}
   m_LocalRotation: {x: 0, y: -0.13939153, z: 0, w: 0.99023736}
-  m_LocalPosition: {x: -73.64946, y: 9.76, z: 21.214504}
+  m_LocalPosition: {x: 40.724, y: 9.967, z: -69.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4394271383842190}
@@ -691,14 +691,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10fa173ef3191354b8ee80062f8e89ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealthPoints: 100
   animatorOverrideController: {fileID: 22100000, guid: aae1eff83643ae94ea4348b12f89633d,
     type: 2}
+  currentHealthPoints: 100
   damagePerHit: 50
   enemyLayer: 9
-  maxAttackRange: 2
   maxHealthPoints: 1000
-  minTimeBetweenHits: 1
   weaponInUse: {fileID: 11400000, guid: ed3221928f9d3ec4188fe26fca2d4039, type: 2}
 --- !u!114 &114194145458826954
 MonoBehaviour:
@@ -711,12 +709,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 352366fc26ea4024499324de70916c03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114586581132447118
+--- !u!114 &114789137507149182
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1500188917210156}
+  m_GameObject: {fileID: 1145625473114270}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2c2373621e504843845b12f46ca572a, type: 3}
@@ -740,7 +738,7 @@ CapsuleCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1017190992082020}
-  m_Material: {fileID: 13400000, guid: 52baaeb214519f347a35cf0edfd262ff, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.3
