@@ -1,5 +1,4 @@
 ﻿// TODO consider re-wiring
-using System;
 using RPG.CameraUI;
 using RPG.Core;
 using RPG.Weapons;
@@ -11,17 +10,15 @@ namespace RPG.Characters
     [RequireComponent(typeof(CameraRaycaster))]
     public class Player : MonoBehaviour, IDamageable
     {
+        [SerializeField] private AnimatorOverrideController animatorOverrideController;
         private CameraRaycaster cameraRaycaster;
         [SerializeField] private float currentHealthPoints;
-
-        [SerializeField] AnimatorOverrideController animatorOverrideController;
         [SerializeField] private float damagePerHit = 10;
-
+        Animator animator;
         [SerializeField] private int enemyLayer = 9;
         private float lastHitTime = 0f;
-        [SerializeField] private float maxAttackRange = 2f;
+
         [SerializeField] private float maxHealthPoints = 100f;
-        [SerializeField] private float minTimeBetweenHits = .5f;
         [SerializeField] private Weapon weaponInUse;
         public float healthAsPercentage { get { return currentHealthPoints / (float)maxHealthPoints; } }
 
@@ -30,26 +27,44 @@ namespace RPG.Characters
             currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
         }
 
-        // Refactor to simplify, reduce number of lines
+        private void AttackTarget(GameObject target)
+        {
+            var enemyComponent = target.GetComponent<Enemy>();
+
+            if (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())
+            {
+                animator.SetTrigger("Attack"); // TODO make const
+                enemyComponent.TakeDamage(damagePerHit);
+                lastHitTime = Time.time;
+            }
+        }
+
+        private bool IsTargetInRange(GameObject target)
+        {
+            // Check distance from player to target
+            // Could also use (enemy.transform.position - transform.position).magnitude
+            float distanceToTarget = Vector3.Distance(target.transform.position, transform.position);
+            return distanceToTarget <= weaponInUse.GetMaxAttackRange();
+        }
+
         private void OnMouseClick(RaycastHit raycastHit, int layerHit)
         {
             if (layerHit == enemyLayer)
             {
                 var enemy = raycastHit.collider.gameObject;
 
-                // Check distance from player to enemy
-                // Could also use (enemy.transform.position - transform.position).magnitude
-                float distanceToEnemy = Vector3.Distance(enemy.transform.position, transform.position);
-                if (distanceToEnemy > maxAttackRange) { return; }
-
-                var enemyComponent = enemy.GetComponent<Enemy>();
-
-                if (Time.time - lastHitTime > minTimeBetweenHits)
+                if (IsTargetInRange(enemy))
                 {
-                    enemyComponent.TakeDamage(damagePerHit);
-                    lastHitTime = Time.time;
+                    AttackTarget(enemy);
                 }
             }
+        }
+
+        private void SetupRuntimeAnimator()
+        {
+            animator = GetComponent<Animator>();
+            animator.runtimeAnimatorController = animatorOverrideController;
+            animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimClip(); // TODO remove constant
         }
 
         private void PutWeaponInHand()
@@ -76,24 +91,17 @@ namespace RPG.Characters
             return dominantHands[0].gameObject;
         }
 
-        private void Start()
-        {
-            RegisterForMouseClick();
-            SetCurrentMaxHealth();
-            PutWeaponInHand();
-            OverrideAnimatorController();
-        }
-
         private void SetCurrentMaxHealth()
         {
             currentHealthPoints = maxHealthPoints;
         }
 
-        private void OverrideAnimatorController()
+        private void Start()
         {
-            Animator animator = GetComponent<Animator>();
-            animator.runtimeAnimatorController = animatorOverrideController;
-            animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimClip(); // TODO remove constant
+            RegisterForMouseClick();
+            SetCurrentMaxHealth();
+            PutWeaponInHand();
+            SetupRuntimeAnimator();
         }
     }
 }

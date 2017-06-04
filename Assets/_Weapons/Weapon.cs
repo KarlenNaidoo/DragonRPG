@@ -10,6 +10,22 @@ namespace RPG.Weapons
         [SerializeField] private AnimationClip attackAnimation;
         public Transform gripTransform;
 
+        [SerializeField] private float maxAttackRange = 2f;
+        [SerializeField] private float minTimeBetweenHits = .5f;
+
+
+        public float GetMinTimeBetweenHits()
+        {
+            // TODO consider whether we take animation time into account
+            return minTimeBetweenHits;
+        }
+
+        public float GetMaxAttackRange()
+        {
+            // TODO consider whether we take animation time into account
+            return maxAttackRange;
+        }
+
         public AnimationClip GetAttackAnimClip()
         {
             RemoveAnimationEvents();
