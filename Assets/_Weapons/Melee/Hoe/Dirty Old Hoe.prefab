@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33422907050045368}
   - component: {fileID: 23869988779779602}
   m_Layer: 0
-  m_Name: Dirt Old Hoe
+  m_Name: Dirty Old Hoe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
