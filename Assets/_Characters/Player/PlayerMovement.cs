@@ -17,7 +17,7 @@ namespace RPG.Characters
 
         AICharacterControl aiCharacterControl = null;
 
-        bool isIndirectMode = false;
+   
 
         [SerializeField] const int walkableLayerNumber = 8;
         [SerializeField] const int enemyLayerNumber = 9;
