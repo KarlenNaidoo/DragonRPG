@@ -14,8 +14,7 @@ namespace RPG.Characters
         private CameraRaycaster cameraRaycaster;
         [SerializeField] private float currentHealthPoints;
         [SerializeField] private float damagePerHit = 10;
-        Animator animator;
-        [SerializeField] private int enemyLayer = 9;
+        private Animator animator;
         private float lastHitTime = 0f;
 
         [SerializeField] private float maxHealthPoints = 100f;
@@ -27,14 +26,12 @@ namespace RPG.Characters
             currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
         }
 
-        private void AttackTarget(GameObject target)
+        private void AttackTarget(Enemy enemy)
         {
-            var enemyComponent = target.GetComponent<Enemy>();
-
             if (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())
             {
                 animator.SetTrigger("Attack"); // TODO make const
-                enemyComponent.TakeDamage(damagePerHit);
+                enemy.TakeDamage(damagePerHit);
                 lastHitTime = Time.time;
             }
         }
@@ -47,18 +44,6 @@ namespace RPG.Characters
             return distanceToTarget <= weaponInUse.GetMaxAttackRange();
         }
 
-        private void OnMouseClick(RaycastHit raycastHit, int layerHit)
-        {
-            if (layerHit == enemyLayer)
-            {
-                var enemy = raycastHit.collider.gameObject;
-
-                if (IsTargetInRange(enemy))
-                {
-                    AttackTarget(enemy);
-                }
-            }
-        }
 
         private void SetupRuntimeAnimator()
         {
@@ -79,7 +64,15 @@ namespace RPG.Characters
         private void RegisterForMouseClick()
         {
             cameraRaycaster = FindObjectOfType<CameraRaycaster>();
-            cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemey;
+        }
+
+        private void OnMouseOverEnemey(Enemy enemy)
+        {
+            if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
+            {
+                AttackTarget(enemy);
+            }
         }
 
         private GameObject RequestDominantHand()

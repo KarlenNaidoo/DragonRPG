@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 using UnityEngine.UI;
 using RPG.CameraUI;
@@ -22,14 +21,22 @@ namespace RPG.Characters
         {
             currentEnergyPoints = maxEnergyPoints;
             cameraRaycaster = FindObjectOfType<CameraRaycaster>();
-            cameraRaycaster.notifyRightClickObservers += ProcessRightClick;
+            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
         }
 
-        void ProcessRightClick(RaycastHit raycastHit, int layerHit)
+        private void OnMouseOverEnemy(Enemy enemy)
+        {
+            if (Input.GetMouseButtonDown(1))
+            {
+                UpdateEnergyPoints();
+                UpdateEnergyBar();
+            }
+        }
+
+        private void UpdateEnergyPoints()
         {
             newEnergyPoints = (currentEnergyPoints - pointsPerHit);
             currentEnergyPoints = Mathf.Clamp(newEnergyPoints, 0, maxEnergyPoints);
-            UpdateEnergyBar();
         }
 
         private void UpdateEnergyBar()

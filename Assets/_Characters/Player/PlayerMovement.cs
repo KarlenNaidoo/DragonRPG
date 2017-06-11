@@ -17,11 +17,6 @@ namespace RPG.Characters
 
         AICharacterControl aiCharacterControl = null;
 
-   
-
-        [SerializeField] const int walkableLayerNumber = 8;
-        [SerializeField] const int enemyLayerNumber = 9;
-
         GameObject walkTarget = null;
 
         private void Start()
@@ -29,31 +24,30 @@ namespace RPG.Characters
             cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
             thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
             aiCharacterControl = GetComponent<AICharacterControl>();
-            cameraRaycaster.notifyMouseClickObservers += ProcessMouseClick;
+
+            cameraRaycaster.onMouseOverPotentiallyWalkable += WalkToDestination;
+            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemey;
             walkTarget = new GameObject("walkTarget");
         }
 
-
-        void ProcessMouseClick(RaycastHit raycastHit, int layerHit)
+        private void OnMouseOverEnemey(Enemy enemy)
         {
-            switch (layerHit)
+            if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) 
             {
-                case enemyLayerNumber:
-                    // navigate to the enemy
-                    GameObject enemy = raycastHit.collider.gameObject;
-                    aiCharacterControl.SetTarget(enemy.transform);
-                    break;
-                case walkableLayerNumber:
-                    // navigate point on the ground
-                    walkTarget.transform.position = raycastHit.point;
-                    aiCharacterControl.SetTarget(walkTarget.transform);
-                    break;
-                default:
-                    Debug.LogWarning("Don't know how to handle mouse click for player movement");
-                    break;
-            }
 
+                aiCharacterControl.SetTarget(enemy.transform);
+            }
         }
+
+        private void WalkToDestination(Vector3 destination)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                walkTarget.transform.position = destination;
+                aiCharacterControl.SetTarget(walkTarget.transform);
+            }
+        }
+
 
         //TODO Make this get called again
 
