@@ -118,5 +118,6 @@ namespace RPG.Characters
             SetupRuntimeAnimator();
             abilities[0].AttachComponentTo(gameObject);
         }
+
     }
 }
