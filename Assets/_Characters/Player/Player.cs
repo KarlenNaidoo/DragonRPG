@@ -90,7 +90,7 @@ namespace RPG.Characters
             if (energyComponent.IsEnergyAvailable(energyCost)) // TODO read from script obj
             {
                 energyComponent.ConsumeEnergy(energyCost);
-                var abilityParams = new AbilityUseParams(enemy, baseDamage);
+                var abilityParams = new AbilityUseParams(enemy, baseDamage, this.transform);
                 abilities[abilityIndex].Use(abilityParams);
                 // Use the ability
             }

@@ -11,7 +11,7 @@ namespace RPG.Characters
         public float baseDamage;
 
         // Set up constructor
-        public AbilityUseParams(IDamageable target, float baseDamage)
+        public AbilityUseParams(IDamageable target, float baseDamage, Transform transform)
         {
             this.target = target;
             this.baseDamage = baseDamage;

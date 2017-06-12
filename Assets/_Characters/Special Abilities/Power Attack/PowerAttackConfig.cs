@@ -20,7 +20,7 @@ namespace RPG.Characters
         {
             var behaviourComponent = gameObjectToAttachTo.AddComponent<PowerAttackBehaviour>();
             behaviourComponent.SetConfig(this);
-            behaviour = behaviourComponent;
+            behaviour = behaviourComponent; // Behaviour is inherited from Special Ability local variable
         }
     }
 }
