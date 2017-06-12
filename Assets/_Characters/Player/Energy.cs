@@ -1,7 +1,6 @@
 ﻿
 using UnityEngine;
 using UnityEngine.UI;
-using RPG.CameraUI;
 
 namespace RPG.Characters
 {
@@ -10,8 +9,6 @@ namespace RPG.Characters
     {
         [SerializeField] RawImage energyBar;
         [SerializeField] float maxEnergyPoints = 100f;
-        [SerializeField] float pointsPerHit = 10f;
-        CameraRaycaster cameraRaycaster;
 
         float currentEnergyPoints;
         private float newEnergyPoints;
@@ -20,27 +17,23 @@ namespace RPG.Characters
         void Start()
         {
             currentEnergyPoints = maxEnergyPoints;
-            cameraRaycaster = FindObjectOfType<CameraRaycaster>();
-            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
         }
 
-        private void OnMouseOverEnemy(Enemy enemy)
+        public void ConsumeEnergy(float amount)
         {
-            if (Input.GetMouseButtonDown(1))
-            {
-                UpdateEnergyPoints();
-                UpdateEnergyBar();
-            }
-        }
-
-        private void UpdateEnergyPoints()
-        {
-            newEnergyPoints = (currentEnergyPoints - pointsPerHit);
+            newEnergyPoints = (currentEnergyPoints - amount);
             currentEnergyPoints = Mathf.Clamp(newEnergyPoints, 0, maxEnergyPoints);
+            UpdateEnergyBar();
+        }
+
+        public bool IsEnergyAvailable(float amount)
+        {
+            return amount < currentEnergyPoints;
         }
 
         private void UpdateEnergyBar()
         {
+            // TODO remove magic numbers
             float xValue = -(EnergyAsPercent() / 2f) - 0.5f;
             energyBar.uvRect = new Rect(xValue, 0f, 0.5f, 1f);
         }

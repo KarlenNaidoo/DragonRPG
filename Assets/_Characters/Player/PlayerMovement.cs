@@ -18,6 +18,7 @@ namespace RPG.Characters
         AICharacterControl aiCharacterControl = null;
 
         GameObject walkTarget = null;
+        
 
         private void Start()
         {
@@ -26,11 +27,11 @@ namespace RPG.Characters
             aiCharacterControl = GetComponent<AICharacterControl>();
 
             cameraRaycaster.onMouseOverPotentiallyWalkable += WalkToDestination;
-            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemey;
+            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
             walkTarget = new GameObject("walkTarget");
         }
 
-        private void OnMouseOverEnemey(Enemy enemy)
+        private void OnMouseOverEnemy(Enemy enemy)
         {
             if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) 
             {
