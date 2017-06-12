@@ -14,12 +14,12 @@ namespace RPG.Characters
         [SerializeField] private AnimatorOverrideController animatorOverrideController;
         private CameraRaycaster cameraRaycaster;
         [SerializeField] private float currentHealthPoints;
-        [SerializeField] private float damagePerHit = 10;
+        [SerializeField] private float baseDamage = 10;
         private Animator animator;
         private float lastHitTime = 0f;
 
         // Temporarily serializing for debugging
-        [SerializeField] SpecialAbilityConfig[] abilities;
+        [SerializeField] SpecialAbility[] abilities;
 
         [SerializeField] private float maxHealthPoints = 100f;
         [SerializeField] private Weapon weaponInUse;
@@ -35,7 +35,7 @@ namespace RPG.Characters
             if (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())
             {
                 animator.SetTrigger("Attack"); // TODO make const
-                enemy.TakeDamage(damagePerHit);
+                enemy.TakeDamage(baseDamage);
                 lastHitTime = Time.time;
             }
         }
@@ -85,10 +85,13 @@ namespace RPG.Characters
         private void AttemptSpecialAbility(int abilityIndex, Enemy enemy)
         {
             var energyComponent = GetComponent<Energy>();
-            if (energyComponent.IsEnergyAvailable(10f)) // TODO read from script obj
+            float energyCost = abilities[abilityIndex].GetEnergyCost();
+            print("Energy Cost: " + energyCost);
+            if (energyComponent.IsEnergyAvailable(energyCost)) // TODO read from script obj
             {
-                energyComponent.ConsumeEnergy(10f);
-                abilities[abilityIndex].Use();
+                energyComponent.ConsumeEnergy(energyCost);
+                var abilityParams = new AbilityUseParams(enemy, baseDamage);
+                abilities[abilityIndex].Use(abilityParams);
                 // Use the ability
             }
         }

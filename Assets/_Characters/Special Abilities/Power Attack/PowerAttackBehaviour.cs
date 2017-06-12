@@ -15,9 +15,12 @@ namespace RPG.Characters
         {
             this.config = configToSet;
         }
-        public void Use()
+        public void Use(AbilityUseParams useParams)
         {
-            print("Power attack used");
+            print("Power attack used by: " + gameObject.name);
+            float damageToDeal = useParams.baseDamage + config.GetExtraDamage();
+            useParams.target.TakeDamage(damageToDeal);
+            
         }
 
         // Use this for initialization
